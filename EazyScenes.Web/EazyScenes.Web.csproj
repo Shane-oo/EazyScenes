@@ -2,16 +2,29 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Carter" Version="8.0.0" />
+      <PackageReference Include="MediatR" Version="12.2.0" />
+      <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EazyScenes.Core\EazyScenes.Core.csproj" />
+      <ProjectReference Include="..\EazyScenes.Data\EazyScenes.Data.csproj" />
+      <ProjectReference Include="..\EazyScenes.Users\EazyScenes.Users.csproj" />
     </ItemGroup>
 
 </Project>
