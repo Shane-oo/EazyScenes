@@ -74,4 +74,13 @@ public class Result<TValue>: Result
     }
 
     #endregion
+
+    #region Public Methods
+
+    public static implicit operator Result<TValue>(TValue value)
+    {
+        return Create(value);
+    }
+
+    #endregion
 }

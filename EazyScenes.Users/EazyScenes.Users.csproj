@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +16,12 @@
     <ItemGroup>
       <PackageReference Include="Carter" Version="8.0.0" />
       <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+      <PackageReference Include="OpenIddict.AspNetCore" Version="5.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EazyScenes.Core\EazyScenes.Core.csproj" />
+      <ProjectReference Include="..\EazyScenes.Data\EazyScenes.Data.csproj" />
     </ItemGroup>
 
 </Project>

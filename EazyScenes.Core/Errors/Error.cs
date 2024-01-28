@@ -28,5 +28,10 @@ public class Error
         Description = description;
     }
 
+    public static Error NotFound(string param)
+    {
+        return new Error($"{param}.NotFound", $"{param} was not found");
+    }
+
     #endregion
 }

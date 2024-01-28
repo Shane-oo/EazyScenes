@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "eazy-scenes-db": "Data Source=localhost;Initial Catalog=eazy_scenes_dev;User Id=sa;Password=Password123!;TrustServerCertificate=True;"
+  }
+}

@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>true</InvariantGlobalization>
+        <InvariantGlobalization>false</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -16,9 +16,13 @@
 
     <ItemGroup>
       <PackageReference Include="Carter" Version="8.0.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
       <PackageReference Include="MediatR" Version="12.2.0" />
       <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+      <PackageReference Include="OpenIddict.AspNetCore" Version="5.1.0" />
+      <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="5.1.0" />
+      <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>

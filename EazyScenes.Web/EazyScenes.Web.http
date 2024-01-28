@@ -5,8 +5,9 @@ Accept: application/json
 
 ###
 
-GET {{EazyScenes.Web_HostAddress}}/users/69
+GET {{EazyScenes.Web_HostAddress}}/api/users/69
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZDQkMtSFM1MTIiLCJraWQiOiJGQzBCN0FDODk4QkMzMzBFQzUxNjdDRENBRUY2Qzc3RDc1ODRDNDk4IiwidHlwIjoiYXQrand0IiwiY3R5IjoiSldUIn0.S2munFC1qcgA9FXDs3774xxbCsFfAZZtg4DMthWL5LcusTT7CnMpAfSEQsM3SAciJK7hUc7F_BREubNW52Qx3fuiZHe3PCv6MNrdAfUlVcGt8tw-g8X_qMR2aKS33cUABFV28Nu4NZHeJxldiX-e_BB4vuCgWFKjsOaRNDR27eGuI7ihKFFcyF5NzeNOCE81FbrJaH1PR-edhp64Aynrd5yGCngaloZ6hQOa9s0NFLdv7keVs9OJ343pnGChKMbwV5KPEmGqXm4W6ttWTcaS_fGjiY4876bwKeN9YMWJ8wYQTG4KB4QHoJ_PkRP86uGOOuuaxomIzwT6n61usKn5vQ.lHG3IMkSWo_YirOkqKS8CQ.G8GJWycJil3DSc2xczdXH5wK25Mi3h_k-ILi1ElXYxOcczCywoURki5lyi-ZC_nLfZpLIIC1GgRvFn93Uq9V_qZRyVhW9ST2msphNDiGWrpJBVdMrV2B7Wb7UwfK18r5ATzJMGO1XOZK0vJvQzcRsyLqH5-eSCxEXvn9kMT3jWhbELpILyMAr3hhnXjOubgqzEheo1Jij5FLsWNRG2ZAXM67Hi6NUnmC2fpSIx8gaq8EzD8RfIoCMlOa3VDir3734x1P2nudOEcsqT9E_5bhwa_aiQgulzGdcFFIarcGxDAEGhT61DTft4vJAzPxKQ5W1ktK259PcRZk8n2bWcDFhPzENqyF5FfpyIkfgYTNrbK6jPMRoZFrl395tLcoikZw3StEuSAynBns6_snn2MqJGIzBGQz3oQg3Q2oStVuxxnTlP2xebiJjKtAgv_6AM7e4BqVVpeunzVDKV1yBoXHL0sYgIYGWvXGQPL_D37OVVM5jztxUvTlXoKs_DACsDNh8jHrZ9CvlPBVmQBFSbEKqFZB1BtItEASoDQB5H2uwKOcu8XK0ydw6ZftBJ3NWCqYwi4FZLT36JkP2W0IfFs2I5vgLQJn6B-SibzZ0Tc-RuxjKB6NATUXw6xM0kuk5Ybrg5vjVCoz8UeCXO2VMjGtffUFzAba69cKH9gkWlkGzICmPG5x4fgHZzP0x1_fQs9uRm9iSVpMnEbxsh7PU6N4WDti1DxZttuhcL98H_NlQrQWn-r37T2ChLIe8i4kOwaGVf2CvHqkviOOnOT0avNrRV1UItg7ScLA6tF-Uw-6XUrTdO9fWV_6PqeKWijQJP5JOUE-DyiuvX_AOt7vABF_8BZIEVrauPKyrBi2d2yLcLzbjnmB0AepwS5ho7zGU4E_ouWM_IckCbQLH1iMxTEE88NWC-UGRUdcSN6r7uK5erC28XW9kjrWN9LcMllTvWd9sSIxzdGOBgs5LhnyCLvmktgxgdo1YwLjkYekYp9CkRY9JpxTTlAxMZjc8I6w4gnCbMB7r9GzYSgd825uAbfNRZmFVTFVb3ti8IasZeZ_ae4Xk-Wjg2PRZ2Iq5dJIMAIJBtS_-EimaDGDUoW4003I_JPOR_FMy0-ztoSZeV0sHSPC9ux3q3GQ-_1QN0lzlk6S8UZdEYPRv1FTqib6PTgBlHhzkCoIAkad9OhfqZO3YU1mr-UXUpal1fN3cn1-tbTOu3FpoHsQbRdS2MUBik9lWg.OQsgFy8dErs41mEx9aZB7DxtjEMfmjF5OnCiwgmJrtQ
 
 ###
 
@@ -14,10 +15,25 @@ POST {{EazyScenes.Web_HostAddress}}/users/
 Accept: application/json
 ###
 
-POST {{EazyScenes.Web_HostAddress}}/testpost
+POST {{EazyScenes.Web_HostAddress}}/api/authentications/token
 Content-Type: application/x-www-form-urlencoded
 
+grant_type=password&username=ShaneMonckCodes&password=Password123!&client_id=EazyScenes
+
+
+###
+GET {{EazyScenes.Web_HostAddress}}/api/authentications/fakeData
+Accept: application/json
+
+
+###
+
+POST {{EazyScenes.Web_HostAddress}}/api/users
+Content-Type: application/json
+
 {
-"username":"test",
-"password":"password123!"
+"email": "shanemonck3@shanemonck.com",
+"username":"ShaneMonckCodes3",
+"password": "Password123!",
+"confirmPassword": "Password123!"
 }
