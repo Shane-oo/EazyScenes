@@ -1,20 +1,30 @@
 using EazyScenes.Core;
 using EazyScenes.Core.Exchange;
 using EazyScenes.Data.Entities;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace EazyScenes.Users.Users.CreateUser;
 
+[UsedImplicitly]
 public class CreateUserHandler: ICommandHandler<CreateUserCommand>
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
+    #region Fields
 
-    public CreateUserHandler(UserManager<User> userManager, RoleManager<Role> roleManager)
+    private readonly UserManager<User> _userManager;
+
+    #endregion
+
+    #region Construction
+
+    public CreateUserHandler(UserManager<User> userManager)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
     }
+
+    #endregion
+
+    #region Public Methods
 
     public async Task<Result> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
@@ -22,10 +32,9 @@ public class CreateUserHandler: ICommandHandler<CreateUserCommand>
 
         var user = new User
                    {
-                       Id = new UserId(Guid.NewGuid()),
                        Email = command.Email,
                        UserName = command.UserName,
-                       CreatedOn = DateTimeOffset.UtcNow // use entity framework core interceptor
+                       CreatedOn = DateTimeOffset.UtcNow // todo implement entity framework core interceptor
                    };
         var userCreateResult = await _userManager.CreateAsync(user, command.Password);
 
@@ -35,19 +44,7 @@ public class CreateUserHandler: ICommandHandler<CreateUserCommand>
             return Result.Failure(identityError != null ? new Error(identityError.Code, identityError.Description) : Error.Unknown);
         }
 
-        // Do the Same For Admin todo
-        const string ROLE_NAME = nameof(Roles.Admin);
-        var roleExists = await _roleManager.FindByNameAsync(ROLE_NAME) != null;
-        if (!roleExists)
-        {
-            var role = new Role
-                       {
-                           Name = ROLE_NAME
-                       };
-            await _roleManager.CreateAsync(role);
-        }
-
-        var roleAddResult = await _userManager.AddToRoleAsync(user, ROLE_NAME);
+        var roleAddResult = await _userManager.AddToRoleAsync(user, nameof(Roles.User));
 
         if (!roleAddResult.Succeeded)
         {
@@ -57,4 +54,6 @@ public class CreateUserHandler: ICommandHandler<CreateUserCommand>
 
         return Result.Success();
     }
+
+    #endregion
 }

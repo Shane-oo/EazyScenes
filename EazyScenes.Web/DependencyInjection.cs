@@ -81,12 +81,12 @@ public static class DependencyInjection
                          })
                 .AddServer(o =>
                            {
-                               
                                o.SetAccessTokenLifetime(TimeSpan.FromMinutes(120))
                                 .SetRefreshTokenLifetime(TimeSpan.FromDays(14))
                                 .SetIdentityTokenLifetime(TimeSpan.FromMinutes(120));
 
-                               o.AllowPasswordFlow();
+                               o.AllowPasswordFlow()
+                                .AllowRefreshTokenFlow();
 
                                o.SetTokenEndpointUris("api/authentications/token");
 
@@ -96,8 +96,10 @@ public static class DependencyInjection
                                     .AddDevelopmentSigningCertificate();
                                }
 
+                               // todo on release
                                //else {o.AddEncryptionCertificate(LoadCertificate(...)
                                // .AddSigningCertificate(LoadCertificate(...)}
+
                                o.UseAspNetCore()
                                 .EnableTokenEndpointPassthrough();
                            })

@@ -2,7 +2,7 @@ using EazyScenes.Core.Exchange;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace EazyScenes.Users.Authentications.AuthenticateUserWithPassword;
+namespace EazyScenes.Users.Authentications;
 
 public class AuthenticateUserWithPasswordCommand: Command<UserAuthenticationPayload>
 {

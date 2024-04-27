@@ -5,7 +5,7 @@ using EazyScenes.Data.Entities;
 using EazyScenes.Data.Entities.Queries;
 using Microsoft.AspNetCore.Identity;
 
-namespace EazyScenes.Users.Authentications.AuthenticateUserWithPassword;
+namespace EazyScenes.Users.Authentications;
 
 public class AuthenticateUserWithPasswordHandler: ICommandHandler<AuthenticateUserWithPasswordCommand, UserAuthenticationPayload>
 {

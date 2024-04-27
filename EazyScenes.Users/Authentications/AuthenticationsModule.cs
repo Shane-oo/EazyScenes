@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Carter;
 using EazyScenes.Core;
-using EazyScenes.Users.Authentications.AuthenticateUserWithPassword;
+using EazyScenes.Data.Entities;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore;
@@ -48,6 +48,27 @@ public class AuthenticationsModule: CarterModule
                               new[] { AUTH_SCHEME });
     }
 
+    private static async Task<IResult> RefreshToken(HttpContext httpContext, ISender sender, CancellationToken cancellationToken)
+    {
+        // Retrieve the claims principal stored in the refresh token
+        var principal = (await httpContext.AuthenticateAsync(AUTH_SCHEME)).Principal;
+        if (principal == null)
+        {
+            return Forbid(new Error(OpenIddictErrors.InvalidRequest, "Could not get principal from refresh token"));
+        }
+
+        var subject = principal.GetClaim(OpenIddictClaims.Subject);
+        if (string.IsNullOrEmpty(subject) || !Guid.TryParse(subject, out var userId))
+        {
+            return Forbid(new Error(OpenIddictErrors.InvalidRequestObject, "Missing required subject claim"));
+        }
+
+        var command = new AuthenticateUserWithRefreshTokenCommand(new UserId(userId));
+        var result = await sender.Send(command, cancellationToken);
+
+        return result.IsFailure ? Forbid(result.ErrorResult) : Results.SignIn(principal, null, AUTH_SCHEME);
+    }
+
     private static IResult SignInUser(OpenIddictRequest request, UserAuthenticationPayload payload)
     {
         var identity = new ClaimsIdentity(AUTH_SCHEME, OpenIddictClaims.Name, OpenIddictClaims.Role);
@@ -74,27 +95,32 @@ public class AuthenticationsModule: CarterModule
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/token", async (HttpContext httpContext, ISender sender, CancellationToken cancellationToken) =>
-                                       {
-                                           var request = httpContext.GetOpenIddictServerRequest();
+                              {
+                                  var request = httpContext.GetOpenIddictServerRequest();
 
-                                           if (request is null)
-                                           {
-                                               return Forbid(new Error(OpenIddictErrors.InvalidRequestObject, "The token request could not be retrieved"));
-                                           }
+                                  if (request is null)
+                                  {
+                                      return Forbid(new Error(OpenIddictErrors.InvalidRequestObject, "The token request could not be retrieved"));
+                                  }
 
-                                           if (request.IsPasswordGrantType())
-                                           {
-                                               var command = new AuthenticateUserWithPasswordCommand(request.Username, request.Password);
-                                               var result = await sender.Send(command, cancellationToken);
+                                  if (request.IsPasswordGrantType())
+                                  {
+                                      var command = new AuthenticateUserWithPasswordCommand(request.Username, request.Password);
+                                      var result = await sender.Send(command, cancellationToken);
 
-                                               return result.IsFailure ? Forbid(result.ErrorResult) : SignInUser(request, result.Value);
-                                           }
+                                      return result.IsFailure ? Forbid(result.ErrorResult) : SignInUser(request, result.Value);
+                                  }
 
-                                           return Forbid(new Error(OpenIddictErrors.UnsupportedGrantType, "Grant type not supported"));
-                                       });
+                                  if (request.IsRefreshTokenGrantType())
+                                  {
+                                      return await RefreshToken(httpContext, sender, cancellationToken);
+                                  }
+
+                                  return Forbid(new Error(OpenIddictErrors.UnsupportedGrantType, "Grant type not supported"));
+                              });
 
 
-        app.MapGet("/fakeData",async (IOpenIddictApplicationManager manager) =>
+        app.MapGet("/fakeData", async (IOpenIddictApplicationManager manager) =>
                                 {
                                     var application = new OpenIddictApplicationDescriptor
                                                       {
@@ -105,6 +131,7 @@ public class AuthenticationsModule: CarterModule
                                                               OpenIddictConstants.Permissions.Endpoints.Token,
 
                                                               OpenIddictConstants.Permissions.GrantTypes.Password,
+                                                              OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
 
                                                               OpenIddictConstants.Permissions.ResponseTypes.Token
                                                           },

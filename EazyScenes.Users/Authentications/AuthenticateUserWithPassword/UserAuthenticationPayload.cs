@@ -1,6 +1,6 @@
 using EazyScenes.Data.Entities;
 
-namespace EazyScenes.Users.Authentications.AuthenticateUserWithPassword;
+namespace EazyScenes.Users.Authentications;
 
 public class UserAuthenticationPayload
 {
